@@ -1,0 +1,44 @@
+# config file
+
+# samples - chip or plate and corresponding well list files
+# sample and base filename must match
+samples:
+ p1053c1: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1053/p1053c1.fastq.gz
+ p1053c2: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1053/p1053c2.fastq.gz
+ p1095c1: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c1.fastq.gz
+ p1095c2: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c2.fastq.gz
+  
+wells:
+ p1053c1: /prj/LZ_PR2B_rewiring/PR2B_Oct21/data_for_Heidelberg/p1053/fastq_single_cell/133405_Laura_WellList.TXT
+ p1053c2: /prj/LZ_PR2B_rewiring/PR2B_Oct21/data_for_Heidelberg/p1053/fastq_single_cell/133347_Laura_chip2_WellList.TXT
+ p1095c1: /prj/LZ_PR2B_rewiring/PR2B_Oct21/data_for_Heidelberg/p1095/fastq_single_cell/133479_chip1_Fabi_WellList.TXT
+ p1095c2: /prj/LZ_PR2B_rewiring/PR2B_Oct21/data_for_Heidelberg/p1095/fastq_single_cell/133699_chip2_Fabi_WellList.TXT
+
+ 
+# path to parent directory
+# data and results are written one directory down to "data" and "results"
+# unless specified written to working directory
+parent_base: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis
+
+
+# --- demultiplexing
+# Flexbar --barcodes and --barcode-reads
+
+# For this data, we found out that the second barcode half in the well list files are reverse complemented...
+# so we re-write the well list files by reverse complementing back the second half for processing
+# if FALSE, well list files are symlinked
+reverse_complement: TRUE
+
+# flexbar adapters
+adapters: /prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/adapters.fa
+flexbar_opts: "-be 0.07 -n 36 -z GZ -m 20 -u 1 -q TAIL -qt 10 -k 248 -qf sanger"
+
+
+# --- alignment
+# STAR Solo
+index: /prj/LZ_PR2B_rewiring/collaboration/GRCm38_96_tmp
+gtf: /biodb/genomes/mus_musculus/GRCm38_96/GRCm38.96.gtf
+# tmp: /scratch/global_tmp/sclzSTAR
+star_opts: "--genomeLoad NoSharedMemory --readFilesCommand zcat --soloType SmartSeq --soloUMIdedup Exact NoDedup --soloFeatures Gene SJ GeneFull --soloStrand Unstranded --outSAMtype BAM SortedByCoordinate --outSAMattributes NH HI AS NM MD RG --outSAMunmapped Within KeepPairs"
+
+

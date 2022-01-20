@@ -1,0 +1,201 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cluster nodes: 40
+Conda environments: ignored
+Job counts:
+	count	jobs
+	1	all
+	4	flexbar
+	4	manifest
+	1	multiqc
+	4	star_solo
+	14
+Resources before job selection: {'_cores': 9223372036854775807, '_nodes': 40}
+Ready jobs (5):
+	multiqc
+	flexbar
+	flexbar
+	flexbar
+	flexbar
+Select jobs to execute...
+Welcome to the CBC MILP Solver 
+Version: 2.10.5 
+Build Date: Dec  8 2020 
+
+command line - cbc /scratch/global_tmp/055ab1035dff4c86873f45d50cf08ee7-pulp.mps max branch printingOptions all solution /scratch/global_tmp/055ab1035dff4c86873f45d50cf08ee7-pulp.sol (default strategy 1)
+At line 2 NAME          MODEL
+At line 3 ROWS
+At line 7 COLUMNS
+At line 33 RHS
+At line 36 BOUNDS
+At line 42 ENDATA
+Problem MODEL has 2 rows, 5 columns and 10 elements
+Coin0008I MODEL read with 0 errors
+Continuous objective value is 322 - 0.00 seconds
+Cgl0004I processed model has 0 rows, 0 columns (0 integer (0 of which binary)) and 0 elements
+Cbc3007W No integer variables - nothing to do
+Cuts at root node changed objective from -322 to -1.79769e+308
+Probing was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Gomory was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Knapsack was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Clique was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+MixedIntegerRounding2 was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+FlowCover was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+TwoMirCuts was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+ZeroHalf was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+
+Result - Optimal solution found
+
+Objective value:                322.00000000
+Enumerated nodes:               0
+Total iterations:               0
+Time (CPU seconds):             0.01
+Time (Wallclock seconds):       0.18
+
+Option for printingOptions changed from normal to all
+Total time (CPU seconds):       0.01   (Wallclock seconds):       0.25
+
+Selected jobs (5):
+	multiqc
+	flexbar
+	flexbar
+	flexbar
+	flexbar
+Resources after job selection: {'_cores': 9223372036854775646, '_nodes': 35}
+
+[Thu Jan 20 15:41:11 2022]
+rule multiqc:
+    input: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c1/p1053c1_fastqc.html, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c2/p1053c2_fastqc.html, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c1/p1095c1_fastqc.html, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_fastqc.html
+    output: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/multiqc_report.html
+    jobid: 5
+    wildcards: data_base=/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data
+
+Jobscript:
+#!/bin/sh
+# properties = {"type": "single", "rule": "multiqc", "local": false, "input": ["/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c1/p1053c1_fastqc.html", "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c2/p1053c2_fastqc.html", "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c1/p1095c1_fastqc.html", "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_fastqc.html"], "output": ["/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/multiqc_report.html"], "wildcards": {"data_base": "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data"}, "params": {}, "log": [], "threads": 1, "resources": {}, "jobid": 5, "cluster": {"account": "eboileau", "mem": "25G", "time": "24:0:0", "threads": "12", "partition": "general"}}
+ cd /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts && \
+/home/eboileau/.miniconda3/envs/snakemake/bin/python3.9 \
+-m snakemake /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/multiqc_report.html --snakefile /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/Snakefile \
+--force -j --keep-target-files --keep-remote --max-inventory-time 0 \
+--wait-for-files /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c1/p1053c1_fastqc.html /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c2/p1053c2_fastqc.html /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c1/p1095c1_fastqc.html /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_fastqc.html --latency-wait 5 \
+ --attempt 1 --force-use-threads --scheduler ilp \
+--wrapper-prefix https://github.com/snakemake/snakemake-wrappers/raw/ \
+ --configfiles /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/config.yaml -p --allowed-rules multiqc --nocolor --notemp --no-hooks --nolock --scheduler-solver-path /home/eboileau/.miniconda3/envs/snakemake/bin \
+--mode 2  --use-envmodules && touch /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h/5.jobfinished || (touch /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h/5.jobfailed; exit 1)
+
+Submitted job 5 with external jobid 'Submitted batch job 65335'.
+
+[Thu Jan 20 15:41:11 2022]
+checkpoint flexbar:
+    input: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1053/p1053c1.fastq.gz, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c1/p1053c1_barcodes.fa, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c1/p1053c1_barcodes.fastq.gz
+    output: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1053c1/trimmed
+    jobid: 10
+    wildcards: results_base=/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results, sample=p1053c1
+    threads: 40
+Downstream jobs will be updated after completion.
+
+
+        mkdir -p /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1053c1/trimmed &&
+        flexbar -r /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1053/p1053c1.fastq.gz --barcodes /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c1/p1053c1_barcodes.fa --barcode-reads /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c1/p1053c1_barcodes.fastq.gz -be 0.07 -n 36 -z GZ -m 20 -u 1 -q TAIL -qt 10 -k 248 -qf sanger -n 40 -a /prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/adapters.fa -t /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1053c1/trimmed/p1053c1
+        
+Jobscript:
+#!/bin/sh
+# properties = {"type": "single", "rule": "flexbar", "local": false, "input": ["/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1053/p1053c1.fastq.gz", "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c1/p1053c1_barcodes.fa", "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c1/p1053c1_barcodes.fastq.gz"], "output": ["/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1053c1/trimmed"], "wildcards": {"results_base": "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results", "sample": "p1053c1"}, "params": {"opts": "-be 0.07 -n 36 -z GZ -m 20 -u 1 -q TAIL -qt 10 -k 248 -qf sanger", "adapters": "/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/adapters.fa"}, "log": [], "threads": 40, "resources": {}, "jobid": 10, "cluster": {"account": "eboileau", "mem": "150G", "time": "96:0:0", "threads": "40", "partition": "long"}}
+ cd /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts && \
+/home/eboileau/.miniconda3/envs/snakemake/bin/python3.9 \
+-m snakemake /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1053c1/trimmed --snakefile /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/Snakefile \
+--force -j --keep-target-files --keep-remote --max-inventory-time 0 \
+--wait-for-files /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1053/p1053c1.fastq.gz /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c1/p1053c1_barcodes.fa /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c1/p1053c1_barcodes.fastq.gz --latency-wait 5 \
+ --attempt 1 --force-use-threads --scheduler ilp \
+--wrapper-prefix https://github.com/snakemake/snakemake-wrappers/raw/ \
+ --configfiles /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/config.yaml -p --allowed-rules flexbar --nocolor --notemp --no-hooks --nolock --scheduler-solver-path /home/eboileau/.miniconda3/envs/snakemake/bin \
+--mode 2  --use-envmodules && touch /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h/10.jobfinished || (touch /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h/10.jobfailed; exit 1)
+
+Submitted job 10 with external jobid 'Submitted batch job 65336'.
+
+[Thu Jan 20 15:41:11 2022]
+checkpoint flexbar:
+    input: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c1.fastq.gz, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c1/p1095c1_barcodes.fa, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c1/p1095c1_barcodes.fastq.gz
+    output: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c1/trimmed
+    jobid: 12
+    wildcards: results_base=/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results, sample=p1095c1
+    threads: 40
+Downstream jobs will be updated after completion.
+
+
+        mkdir -p /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c1/trimmed &&
+        flexbar -r /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c1.fastq.gz --barcodes /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c1/p1095c1_barcodes.fa --barcode-reads /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c1/p1095c1_barcodes.fastq.gz -be 0.07 -n 36 -z GZ -m 20 -u 1 -q TAIL -qt 10 -k 248 -qf sanger -n 40 -a /prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/adapters.fa -t /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c1/trimmed/p1095c1
+        
+Jobscript:
+#!/bin/sh
+# properties = {"type": "single", "rule": "flexbar", "local": false, "input": ["/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c1.fastq.gz", "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c1/p1095c1_barcodes.fa", "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c1/p1095c1_barcodes.fastq.gz"], "output": ["/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c1/trimmed"], "wildcards": {"results_base": "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results", "sample": "p1095c1"}, "params": {"opts": "-be 0.07 -n 36 -z GZ -m 20 -u 1 -q TAIL -qt 10 -k 248 -qf sanger", "adapters": "/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/adapters.fa"}, "log": [], "threads": 40, "resources": {}, "jobid": 12, "cluster": {"account": "eboileau", "mem": "150G", "time": "96:0:0", "threads": "40", "partition": "long"}}
+ cd /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts && \
+/home/eboileau/.miniconda3/envs/snakemake/bin/python3.9 \
+-m snakemake /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c1/trimmed --snakefile /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/Snakefile \
+--force -j --keep-target-files --keep-remote --max-inventory-time 0 \
+--wait-for-files /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c1.fastq.gz /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c1/p1095c1_barcodes.fa /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c1/p1095c1_barcodes.fastq.gz --latency-wait 5 \
+ --attempt 1 --force-use-threads --scheduler ilp \
+--wrapper-prefix https://github.com/snakemake/snakemake-wrappers/raw/ \
+ --configfiles /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/config.yaml -p --allowed-rules flexbar --nocolor --notemp --no-hooks --nolock --scheduler-solver-path /home/eboileau/.miniconda3/envs/snakemake/bin \
+--mode 2  --use-envmodules && touch /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h/12.jobfinished || (touch /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h/12.jobfailed; exit 1)
+
+Submitted job 12 with external jobid 'Submitted batch job 65337'.
+
+[Thu Jan 20 15:41:11 2022]
+checkpoint flexbar:
+    input: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1053/p1053c2.fastq.gz, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c2/p1053c2_barcodes.fa, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c2/p1053c2_barcodes.fastq.gz
+    output: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1053c2/trimmed
+    jobid: 11
+    wildcards: results_base=/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results, sample=p1053c2
+    threads: 40
+Downstream jobs will be updated after completion.
+
+
+        mkdir -p /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1053c2/trimmed &&
+        flexbar -r /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1053/p1053c2.fastq.gz --barcodes /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c2/p1053c2_barcodes.fa --barcode-reads /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c2/p1053c2_barcodes.fastq.gz -be 0.07 -n 36 -z GZ -m 20 -u 1 -q TAIL -qt 10 -k 248 -qf sanger -n 40 -a /prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/adapters.fa -t /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1053c2/trimmed/p1053c2
+        
+Jobscript:
+#!/bin/sh
+# properties = {"type": "single", "rule": "flexbar", "local": false, "input": ["/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1053/p1053c2.fastq.gz", "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c2/p1053c2_barcodes.fa", "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c2/p1053c2_barcodes.fastq.gz"], "output": ["/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1053c2/trimmed"], "wildcards": {"results_base": "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results", "sample": "p1053c2"}, "params": {"opts": "-be 0.07 -n 36 -z GZ -m 20 -u 1 -q TAIL -qt 10 -k 248 -qf sanger", "adapters": "/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/adapters.fa"}, "log": [], "threads": 40, "resources": {}, "jobid": 11, "cluster": {"account": "eboileau", "mem": "150G", "time": "96:0:0", "threads": "40", "partition": "long"}}
+ cd /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts && \
+/home/eboileau/.miniconda3/envs/snakemake/bin/python3.9 \
+-m snakemake /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1053c2/trimmed --snakefile /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/Snakefile \
+--force -j --keep-target-files --keep-remote --max-inventory-time 0 \
+--wait-for-files /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1053/p1053c2.fastq.gz /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c2/p1053c2_barcodes.fa /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1053c2/p1053c2_barcodes.fastq.gz --latency-wait 5 \
+ --attempt 1 --force-use-threads --scheduler ilp \
+--wrapper-prefix https://github.com/snakemake/snakemake-wrappers/raw/ \
+ --configfiles /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/config.yaml -p --allowed-rules flexbar --nocolor --notemp --no-hooks --nolock --scheduler-solver-path /home/eboileau/.miniconda3/envs/snakemake/bin \
+--mode 2  --use-envmodules && touch /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h/11.jobfinished || (touch /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h/11.jobfailed; exit 1)
+
+Submitted job 11 with external jobid 'Submitted batch job 65338'.
+
+[Thu Jan 20 15:41:11 2022]
+checkpoint flexbar:
+    input: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c2.fastq.gz, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fa, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fastq.gz
+    output: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c2/trimmed
+    jobid: 13
+    wildcards: results_base=/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results, sample=p1095c2
+    threads: 40
+Downstream jobs will be updated after completion.
+
+
+        mkdir -p /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c2/trimmed &&
+        flexbar -r /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c2.fastq.gz --barcodes /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fa --barcode-reads /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fastq.gz -be 0.07 -n 36 -z GZ -m 20 -u 1 -q TAIL -qt 10 -k 248 -qf sanger -n 40 -a /prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/adapters.fa -t /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c2/trimmed/p1095c2
+        
+Jobscript:
+#!/bin/sh
+# properties = {"type": "single", "rule": "flexbar", "local": false, "input": ["/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c2.fastq.gz", "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fa", "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fastq.gz"], "output": ["/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c2/trimmed"], "wildcards": {"results_base": "/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results", "sample": "p1095c2"}, "params": {"opts": "-be 0.07 -n 36 -z GZ -m 20 -u 1 -q TAIL -qt 10 -k 248 -qf sanger", "adapters": "/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/adapters.fa"}, "log": [], "threads": 40, "resources": {}, "jobid": 13, "cluster": {"account": "eboileau", "mem": "150G", "time": "96:0:0", "threads": "40", "partition": "long"}}
+ cd /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts && \
+/home/eboileau/.miniconda3/envs/snakemake/bin/python3.9 \
+-m snakemake /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c2/trimmed --snakefile /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/Snakefile \
+--force -j --keep-target-files --keep-remote --max-inventory-time 0 \
+--wait-for-files /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c2.fastq.gz /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fa /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fastq.gz --latency-wait 5 \
+ --attempt 1 --force-use-threads --scheduler ilp \
+--wrapper-prefix https://github.com/snakemake/snakemake-wrappers/raw/ \
+ --configfiles /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/config.yaml -p --allowed-rules flexbar --nocolor --notemp --no-hooks --nolock --scheduler-solver-path /home/eboileau/.miniconda3/envs/snakemake/bin \
+--mode 2  --use-envmodules && touch /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h/13.jobfinished || (touch /beegfs/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/scripts/.snakemake/tmp.n64u577h/13.jobfailed; exit 1)
+
+Submitted job 13 with external jobid 'Submitted batch job 65339'.
+[Thu Jan 20 15:41:30 2022]
+Finished job 5.
+1 of 14 steps (7%) done

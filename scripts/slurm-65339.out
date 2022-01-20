@@ -1,0 +1,25 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 40
+Rules claiming more threads will be scaled down.
+Conda environments: ignored
+Job counts:
+	count	jobs
+	1	flexbar
+	1
+Select jobs to execute...
+
+[Thu Jan 20 15:41:14 2022]
+checkpoint flexbar:
+    input: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c2.fastq.gz, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fa, /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fastq.gz
+    output: /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c2/trimmed
+    jobid: 0
+    wildcards: results_base=/prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results, sample=p1095c2
+    threads: 40
+Downstream jobs will be updated after completion.
+
+
+        mkdir -p /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c2/trimmed &&
+        flexbar -r /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/raw/p1095/p1095c2.fastq.gz --barcodes /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fa --barcode-reads /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/data/p1095c2/p1095c2_barcodes.fastq.gz -be 0.07 -n 36 -z GZ -m 20 -u 1 -q TAIL -qt 10 -k 248 -qf sanger -n 40 -a /prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/adapters.fa -t /prj/LZ_PR2B_rewiring/PR2B_Oct21/analysis/results/p1095c2/trimmed/p1095c2
+        
+Activating environment modules: flexbar/3.5.0_git

@@ -1,0 +1,29 @@
+{
+    "__default__":
+    {
+        "account": "eboileau",
+        "mem": "25G",
+        "time": "24:0:0",
+        "threads": "12",
+        "partition" : "general"
+    },
+    "flexbar":
+    {
+        "account": "eboileau",
+        "mem": "150G",
+        "time": "96:0:0",
+        "threads": "40",
+        "partition" : "long"
+    },
+    "star_solo":
+    {
+        "account": "eboileau",
+        "mem": "150G",
+        "time": "24:0:0",
+        "threads": "12",
+        "partition" : "general"
+    }
+}
+
+
+

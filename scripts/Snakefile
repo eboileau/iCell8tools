@@ -1,0 +1,171 @@
+# -*- coding: utf-8
+
+"""
+Snakemake workflow to process iCell8 data
+"""
+
+# multiqc
+# export the following environment variables before running this workflow
+# export LC_ALL=C.UTF-8                                                                                                                                                   
+# export LANG=C.UTF-8  
+
+# flexbar
+# ulimit -n 1048576
+
+import os
+import glob
+
+
+SAMPLES = config['samples'].keys()
+WELLS = config['wells'].keys()
+
+PARENT_BASE = config.get("parent_base", ".")
+DATA_BASE = os.path.join(PARENT_BASE, 'data')
+RESULTS_BASE = os.path.join(PARENT_BASE, 'results')
+
+RC = 'FALSE'
+if config["reverse_complement"] is True:
+    RC = 'TRUE'
+
+
+def get_input_fastqs(wildcards):
+    return config["samples"][wildcards.sample]
+
+
+def get_input_wells(wildcards):
+    return config["wells"][wildcards.sample]
+
+
+rule all:
+    input:
+        expand("{data_base}/{sample}/{sample}_fastqc.html", data_base=DATA_BASE, sample=SAMPLES),
+        expand("{data_base}/multiqc_report.html", data_base=DATA_BASE),
+        expand("{data_base}/{sample}/{sample}_WellList.TXT", data_base=DATA_BASE, sample=SAMPLES),
+        expand("{data_base}/{sample}/{sample}_barcodes.fa", data_base=DATA_BASE, sample=SAMPLES),
+        expand("{data_base}/{sample}/{sample}_barcodes.fastq.gz", data_base=DATA_BASE, sample=SAMPLES),
+        expand("{results_base}/{sample}/trimmed", results_base=RESULTS_BASE, sample=SAMPLES),
+        expand("{results_base}/{sample}/{sample}_manifest.txt", results_base=RESULTS_BASE, sample=SAMPLES),
+        expand("{results_base}/{sample}/aligned", results_base=RESULTS_BASE, sample=SAMPLES)
+        
+
+rule fastqc:
+    input:
+        fastq = get_input_fastqs
+    output:
+        html = "{data_base}/{sample}/{sample}_fastqc.html",
+        zip  = "{data_base}/{sample}/{sample}_fastqc.zip"
+    envmodules:
+        "fastqc/0.11.8"
+    #log:
+    #    "logs/fastqc/{sample}.log"
+    threads: 12
+    wrapper:
+        "v0.86.0/bio/fastqc"
+        
+        
+rule multiqc:
+    input: 
+        fastqc = expand("{data_base}/{sample}/{sample}_fastqc.html", data_base=DATA_BASE, sample=SAMPLES)
+    output: "{data_base}/multiqc_report.html"
+    envmodules:
+        "multiqc/1.9"
+    wrapper:
+        "v0.86.0/bio/multiqc"
+
+
+rule barcodes:
+    input:
+        well = get_input_wells,
+        fastq = get_input_fastqs
+    output:
+        well = "{data_base}/{sample}/{sample}_WellList.TXT",
+        bfa = "{data_base}/{sample}/{sample}_barcodes.fa",
+        bfq = "{data_base}/{sample}/{sample}_barcodes.fastq.gz"
+    params:
+        rc = RC,
+        output = "{data_base}/{sample}"
+    shell:
+        """
+        RC_FLAG=""
+        if [[ {params.rc} == "TRUE" ]];
+        then
+         RC_FLAG="-rc"
+        fi
+        ../utils/rw_well_list.py {input.well} {wildcards.sample} {params.output} $RC_FLAG
+        /usr/bin/perl ../utils/barcodes_reformat_iCELL8_single.pl {input.fastq} {wildcards.sample} {params.output}
+        """
+    
+# the checkpoint that shall trigger re-evaluation of the DAG
+# define directory as output
+checkpoint flexbar:
+    input:
+        fastq = get_input_fastqs,
+        bfa = DATA_BASE + "/{sample}/{sample}_barcodes.fa",
+        bfq = DATA_BASE + "/{sample}/{sample}_barcodes.fastq.gz"
+    output:
+        trimmed = directory("{results_base}/{sample}/trimmed")
+    envmodules:
+        "flexbar/3.5.0_git"
+    params:
+        opts = config["flexbar_opts"],
+        adapters = config["adapters"],
+    threads: 40
+    shell:
+        """
+        mkdir -p {output.trimmed} &&
+        flexbar -r {input.fastq} --barcodes {input.bfa} --barcode-reads {input.bfq} {params.opts} -n {threads} -a {params.adapters} -t {output.trimmed}/{wildcards.sample}
+        """
+
+
+def aggregate_input(wildcards):
+    checkpoint_output = checkpoints.flexbar.get(**wildcards).output[0]
+    return expand("{results_base}/{sample}/trimmed/{fastq}.fastq.gz",
+           results_base=RESULTS_BASE,
+           sample=wildcards.sample,
+           fastq=glob_wildcards(os.path.join(checkpoint_output, "{fastq}.fastq.gz")).fastq)
+
+
+rule manifest:
+    input:
+        well = DATA_BASE + "/{sample}/{sample}_WellList.TXT",
+        trimmed = aggregate_input
+    output:
+        manifest = "{results_base}/{sample}/{sample}_manifest.txt"
+    params:
+        prefix = "{results_base}/{sample}/trimmed",
+        output = "{results_base}/{sample}"
+    shell:
+        """
+        ../utils/manifest.py {input.well} {wildcards.sample} {params.output} {params.prefix}
+        """
+
+
+try:
+    TMP = f"--outTmpDir {config['tmp']}"
+except:
+    TMP = ''
+    
+
+# define directory as output, but no need to checkpoint
+# we could have defined e.g. Aligned.sortedByCoord.out.bam
+rule star_solo:
+    input:
+        manifest = RESULTS_BASE +  "/{sample}/{sample}_manifest.txt",
+        trimmed = aggregate_input
+    output:
+        aligned = directory("{results_base}/{sample}/aligned")
+    envmodules:
+        "star/2.7.7a"
+    params:
+        prefix = "{results_base}/{sample}/trimmed/",
+        opts = config["star_opts"],
+        index = config["index"],
+        gtf = config["gtf"],
+        tmp = TMP
+    threads: 12
+    shell:
+        """
+        mkdir -p {output.aligned} &&
+        STAR --runThreadN {threads} --genomeDir {params.index} --sjdbGTFfile {params.gtf} --readFilesPrefix {params.prefix} --readFilesManifest {input.manifest} {params.tmp} {params.opts} --outFileNamePrefix {output.aligned}/
+        """
+
