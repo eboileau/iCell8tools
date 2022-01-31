@@ -3,13 +3,14 @@
 #SBATCH -n 1
 #SBATCH -N 1
 #SBATCH -c 1
+#SBATCH -p long
 #SBATCH --mem=25G
 #SBATCH --job-name="icell8"
 #SBATCH --mail-user=eboileau@uni-heidelberg.de
 
 # conda activate snakemake
 
-# snakemake --unlock --cores 40
+snakemake --configfile ../config.yaml --unlock --cores 40
 
 CLUSTER_CONFIG=/prj/LZ_PR2B_rewiring/PR2B_Oct21/iCell8tools/cluster.json
 snakemake --configfile ../config.yaml -j 40 all --use-envmodules --printshellcmds --verbose --cluster-config $CLUSTER_CONFIG --cluster "sbatch -A {cluster.account} --mem={cluster.mem} -t {cluster.time} -c {cluster.threads} -p {cluster.partition}" # --dry-run
