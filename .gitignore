@@ -51,7 +51,8 @@ logs/
 # snakemake
 .snakemake/
 
-
+# notebooks
+/notebooks/
 
 
 

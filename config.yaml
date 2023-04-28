@@ -41,4 +41,6 @@ gtf: /biodb/genomes/mus_musculus/GRCm38_96/GRCm38.96.gtf
 # tmp: /scratch/global_tmp/sclzSTAR
 star_opts: "--genomeLoad NoSharedMemory --readFilesCommand zcat --soloType SmartSeq --soloUMIdedup Exact NoDedup --soloFeatures Gene SJ GeneFull --soloStrand Unstranded --outSAMtype BAM SortedByCoordinate --outSAMattributes NH HI AS NM MD RG --outSAMunmapped Within KeepPairs"
 
+# for cell filtering options
+# see https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md#cell-filtering-calling
 
